@@ -11,6 +11,24 @@ const knexConfig = {
 
 const db = knex(knexConfig);
 
+// POST REQUEST
+router.post('/', (req, res) => {
+    db('zoos')
+        .insert(req.body)
+        .then(ids => {
+            const [id] = ids;
+
+            db('zoos')
+                .where({ id })
+                .then(zoo => {
+                    res.status(200).json(zoo)
+                })
+                .catch(err => {
+                    res.status(500).json(err)
+                })
+        })
+})
+
 // GET REQUEST
 router.get('/', (req, res) => {
     db('zoos')
@@ -54,21 +72,24 @@ router.delete('/:id', (req, res) => {
         })
 })
 
-// POST REQUEST
-router.post('/', (req, res) => {
-    db('zoos')
-        .insert(req.body)
-        .then(ids => {
-            const [id] = ids;
+// UPDATE REQUEST
+router.put('/:id', (req, res) => {
+    const id = req.params.id;
 
-            db('zoos')
-                .where({ id })
-                .then(zoo => {
-                    res.status(200).json(zoo)
-                })
-                .catch(err => {
-                    res.status(500).json(err)
-                })
+    db('zoos')
+        .where({ id: id })
+        .update(req.body)
+        .then(zoo => {
+            if (zoo > 0) {
+                db('zoos')
+                    .where({ id: id })
+                    .then(zoo => {
+                        res.status(200).json(zoo)
+                    })
+            }
+        })
+        .catch(err => {
+            res.status(500).json(err)
         })
 })
 

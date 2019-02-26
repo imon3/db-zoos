@@ -11,8 +11,9 @@ const knexConfig = {
 
 const db = knex(knexConfig);
 
+// ZOOS CRUD METHODS
 // POST REQUEST
-router.post('/', (req, res) => {
+router.post('/zoos', (req, res) => {
     db('zoos')
         .insert(req.body)
         .then(ids => {
@@ -30,7 +31,7 @@ router.post('/', (req, res) => {
 })
 
 // GET REQUEST
-router.get('/', (req, res) => {
+router.get('/zoos', (req, res) => {
     db('zoos')
         .then(zoos => {
             console.log(zoos)
@@ -41,7 +42,7 @@ router.get('/', (req, res) => {
         })
 })
 
-router.get('/:id', (req, res) => {
+router.get('/zoos/:id', (req, res) => {
     const id = req.params.id;
 
     db('zoos')
@@ -55,7 +56,7 @@ router.get('/:id', (req, res) => {
 })
 
 // DELETE REQUEST
-router.delete('/:id', (req, res) => {
+router.delete('/zoos/:id', (req, res) => {
     const id = req.params.id;
     db('zoos')
         .where({ id })
@@ -73,7 +74,7 @@ router.delete('/:id', (req, res) => {
 })
 
 // UPDATE REQUEST
-router.put('/:id', (req, res) => {
+router.put('/zoos/:id', (req, res) => {
     const id = req.params.id;
 
     db('zoos')
@@ -87,6 +88,31 @@ router.put('/:id', (req, res) => {
                         res.status(200).json(zoo)
                     })
             }
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+})
+
+// BEARS CRUD METHODS
+// GET REQUEST
+router.get('/bears', (req, res) => {
+    db('bears')
+        .then(bears => {
+            res.status(200).json(bears)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+})
+
+router.get('/bears/:id', (req, res) => {
+    const id = req.params.id;
+
+    db('bears')
+        .where({ id: id })
+        .then(bear => {
+            res.status(200).json(bear)
         })
         .catch(err => {
             res.status(500).json(err)

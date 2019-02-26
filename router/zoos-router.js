@@ -119,4 +119,22 @@ router.get('/bears/:id', (req, res) => {
         })
 })
 
+// CREATE REQUEST
+router.post('/bears', (req, res) => {
+    db('bears')
+        .insert(req.body)
+        .then(ids => {
+            const [id] = ids;
+
+            db('bears')
+                .where({ id })
+                .then(bear => {
+                    res.status(200).json(bear)
+                })
+                .catch(err => {
+                    res.status(500).json(err)
+                })
+        })
+})
+
 module.exports = router;

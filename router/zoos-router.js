@@ -36,6 +36,24 @@ router.get('/:id', (req, res) => {
         })
 })
 
+// DELETE REQUEST
+router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+    db('zoos')
+        .where({ id })
+        .del()
+        .then(zoo => {
+            if (zoo > 0) {
+                res.status(204).json({
+                    message: 'The zoo was deleted.'
+                })
+            }
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+})
+
 // POST REQUEST
 router.post('/', (req, res) => {
     db('zoos')

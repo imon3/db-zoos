@@ -36,4 +36,22 @@ router.get('/:id', (req, res) => {
         })
 })
 
+// POST REQUEST
+router.post('/', (req, res) => {
+    db('zoos')
+        .insert(req.body)
+        .then(ids => {
+            const [id] = ids;
+
+            db('zoos')
+                .where({ id })
+                .then(zoo => {
+                    res.status(200).json(zoo)
+                })
+                .catch(err => {
+                    res.status(500).json(err)
+                })
+        })
+})
+
 module.exports = router;

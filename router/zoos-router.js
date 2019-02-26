@@ -163,4 +163,28 @@ router.delete('/bears/:id', (req, res) => {
         })
 })
 
+// UPDATE REQUEST
+router.put('/bears/:id', (req, res) => {
+    const id = req.params.id;
+    db('bears')
+        .where({ id: id })
+        .update(req.body)
+        .then(bear => {
+            if (bear > 0) {
+                db('bears')
+                    .where({ id: id })
+                    .then(bear => {
+                        res.status(201).json(bear)
+                    })
+            } else {
+                res.status(404).json({
+                    message: 'The bear culd not be found.'
+                })
+            }
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+})
+
 module.exports = router;

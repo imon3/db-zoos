@@ -66,6 +66,10 @@ router.delete('/zoos/:id', (req, res) => {
                 res.status(204).json({
                     message: 'The zoo was deleted.'
                 })
+            } else {
+                res.status(404).json({
+                    message: 'The zoo was not found.'
+                })
             }
         })
         .catch(err => {
@@ -134,6 +138,28 @@ router.post('/bears', (req, res) => {
                 .catch(err => {
                     res.status(500).json(err)
                 })
+        })
+})
+
+// DELETE REQUEST
+router.delete('/bears/:id', (req, res) => {
+    const id = req.params.id;
+    db('bears')
+        .where({ id })
+        .delete()
+        .then(bear => {
+            if (bear > 0) {
+                res.status(204).json({
+                    message: 'The bear was deleted.'
+                })
+            } else {
+                res.status(404).json({
+                    message: 'The bear was not found.'
+                })
+            }
+        })
+        .catch(err => {
+            res.status(500).json(err)
         })
 })
 

@@ -1,8 +1,9 @@
 const express = require('express');
 const helmet = require('helmet');
-const zoosRouter = require('./router/zoos-router')
 
 const server = express();
+
+const zoosRouter = require('./router/zoos-router');
 
 server.use(express.json());
 server.use(helmet());

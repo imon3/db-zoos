@@ -89,7 +89,7 @@ router.put('/zoos/:id', (req, res) => {
                 db('zoos')
                     .where({ id: id })
                     .then(zoo => {
-                        res.status(200).json(zoo)
+                        res.status(201).json(zoo)
                     })
             }
         })
